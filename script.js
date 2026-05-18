@@ -13,7 +13,21 @@ loadMaster();
 
 async function loadMaster(){
 
+const statusDiv=
+
+document.getElementById(
+"masterStatus"
+);
+
+try{
+
+statusDiv.innerHTML=
+
+"🔄 Memuat master produk...";
+
+
 let res=
+
 await fetch(
 
 API+
@@ -21,15 +35,51 @@ API+
 
 );
 
+
 let data=
+
 await res.json();
 
-MASTER=data.data;
+
+MASTER=
+data.data;
+
+
+
+statusDiv.innerHTML=
+
+`
+
+✅ Master berhasil dimuat
+
+<br>
+
+Total Produk :
+
+${MASTER.length}
+
+`;
+
+}
+catch(err){
 
 console.log(
-"Master loaded:",
-MASTER.length
+err
 );
+
+statusDiv.innerHTML=
+
+`
+
+❌ Gagal memuat master
+
+<br>
+
+Periksa koneksi internet
+
+`;
+
+}
 
 }
 
