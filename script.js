@@ -14,16 +14,37 @@ loadMaster();
 async function loadMaster(){
 
 const statusDiv=
-
 document.getElementById(
 "masterStatus"
 );
 
+const scanBtn=
+document.getElementById(
+"btnScan"
+);
+
+const scanInput=
+document.getElementById(
+"scanInput"
+);
+
+
+
+scanBtn.disabled=true;
+
+scanInput.disabled=true;
+
+
+
 try{
 
-statusDiv.innerHTML=
+statusDiv.innerHTML=`
 
-"🔄 Memuat master produk...";
+🔄 Memuat master produk...
+<br>
+mohon tunggu dulu..
+
+`;
 
 
 let res=
@@ -41,40 +62,32 @@ let data=
 await res.json();
 
 
-MASTER=
-data.data;
+MASTER=data.data;
 
 
 
-statusDiv.innerHTML=
+scanBtn.disabled=false;
 
-`
+scanInput.disabled=false;
 
-✅ Master berhasil dimuat
 
-<br>
 
-Total Produk :
+statusDiv.innerHTML=`
 
-${MASTER.length}
+✅ Siap mulai hitung
 
 `;
 
 }
 catch(err){
 
-console.log(
-err
-);
+console.log(err);
 
-statusDiv.innerHTML=
 
-`
+statusDiv.innerHTML=`
 
 ❌ Gagal memuat master
-
 <br>
-
 Periksa koneksi internet
 
 `;
