@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SO Suryatokoku</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Stock Opname</h2>
+
+<div id="loginArea">
+
+<input id="petugas" placeholder="Nama Petugas">
+
+<select id="tim">
+
+<option value="">Pilih Tim</option>
+<option>Surtok</option>
+<option>Audit</option>
+
+</select>
+
+<input id="rak" placeholder="Rak">
+
+<button onclick="mulai()">
+MULAI
+</button>
+
+</div>
+
+
+<div id="scanArea" style="display:none;">
+
+<div class="info">
+
+<div>
+Petugas:
+<span id="showPetugas"></span>
+</div>
+
+<div>
+Tim:
+<span id="showTim"></span>
+</div>
+
+<div>
+Rak:
+<span id="showRak"></span>
+</div>
+
+</div>
+
+<div id="reader"></div>
+
+<input
+id="manualInput"
+placeholder="Scan atau ketik barcode/kode item"
+>
+
+<button onclick="cariManual()">
+Cari
+</button>
+
+<div id="produk"></div>
+
+<input
+id="qty"
+type="number"
+placeholder="Qty Fisik"
+>
+
+<button onclick="simpan()">
+SIMPAN
+</button>
+
+<button onclick="selesaiRak()">
+SELESAI RAK
+</button>
+
+<h3>Riwayat Scan</h3>
+
+<div id="history">
+
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
