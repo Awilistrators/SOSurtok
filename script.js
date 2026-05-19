@@ -614,30 +614,3 @@ document
 "none";
 
 }
-
-function tampilToast(pesan){
-
-const toast=
-
-document.createElement(
-"div"
-);
-
-toast.innerHTML=
-pesan;
-
-toast.className=
-"toast";
-
-document.body.appendChild(
-toast
-);
-
-
-setTimeout(()=>{
-
-toast.remove();
-
-},1500);
-
-}
