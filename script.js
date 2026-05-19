@@ -414,32 +414,6 @@ document
 };
 
 
-const res=
-
-await fetch(
-
-API,
-
-{
-
-method:"POST",
-
-body:
-JSON.stringify(body)
-
-}
-
-);
-
-
-const data=
-await res.json();
-
-
-tampilToast(
-"✅ "+data.message
-);
-
 
 document
 .getElementById(
@@ -473,6 +447,53 @@ document
 "scanInput"
 )
 .focus();
+
+
+
+try{
+
+const res=
+
+await fetch(
+
+API,
+
+{
+
+method:"POST",
+
+body:
+JSON.stringify(
+body)
+
+}
+
+);
+
+
+const data=
+
+await res.json();
+
+
+tampilToast(
+
+"✅ "+data.message
+
+);
+
+}
+catch(err){
+
+console.log(err);
+
+tampilToast(
+
+"❌ Gagal menyimpan"
+
+);
+
+}
 
 }
 
