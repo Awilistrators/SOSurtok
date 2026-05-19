@@ -187,3 +187,25 @@ opacity:1;
 }
 
 }
+
+.rak-row{
+
+display:flex;
+
+gap:10px;
+
+}
+
+.rak-row input{
+
+flex:1;
+
+}
+
+.rak-row button{
+
+width:120px;
+
+margin-top:10px;
+
+}
