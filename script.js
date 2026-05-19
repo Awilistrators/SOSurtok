@@ -442,3 +442,36 @@ document
 .focus();
 
 }
+
+function tampilPopup(pesan){
+
+document
+.getElementById(
+"popupText"
+)
+.innerHTML=pesan;
+
+
+document
+.getElementById(
+"popup"
+)
+.style.display=
+
+"flex";
+
+}
+
+
+
+function tutupPopup(){
+
+document
+.getElementById(
+"popup"
+)
+.style.display=
+
+"none";
+
+}
