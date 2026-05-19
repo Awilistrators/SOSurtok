@@ -330,10 +330,40 @@ document
 
 async function simpan(){
 
+if(
+
+!document
+.getElementById("tim")
+.value ||
+
+!document
+.getElementById("petugas")
+.value ||
+
+!document
+.getElementById("rak")
+.value
+
+){
+
+tampilPopup(
+
+"⚠️ Harap pilih tim,<br><br>isi nama petugas dan rak"
+
+);
+
+return;
+
+}
+
+
+
 if(!produk){
 
-alert(
-"Pilih produk"
+tampilPopup(
+
+"⚠️ Harap scan atau pilih produk"
+
 );
 
 return;
