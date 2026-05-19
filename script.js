@@ -1,9 +1,8 @@
 const API="https://script.google.com/macros/s/AKfycbyAHGsQouvw1_dP5kSOMqpn_1mVDClLdtoiA80c_HyMRP6UYZgeRaOqADPLr1I77f0jkA/exec";
 
 let MASTER=[];
-let produk={};
+let produk=null;
 let scanner=null;
-
 
 window.onload=async()=>{
 
@@ -30,11 +29,8 @@ document.getElementById(
 "scanInput"
 );
 
-
 scanBtn.disabled=true;
-
 scanInput.disabled=true;
-
 
 try{
 
@@ -46,27 +42,20 @@ mohon tunggu dulu..
 
 `;
 
+const res=
 
-let res=
 await fetch(
-
-API+
-"?action=master"
-
+API+"?action=master"
 );
 
-
-let data=
+const data=
 await res.json();
 
-
-MASTER=data.data;
+MASTER=data.data||[];
 
 
 scanBtn.disabled=false;
-
 scanInput.disabled=false;
-
 
 statusDiv.innerHTML=`
 
@@ -74,14 +63,12 @@ statusDiv.innerHTML=`
 
 `;
 
-
 scanInput.focus();
 
 }
 catch(err){
 
 console.log(err);
-
 
 statusDiv.innerHTML=`
 
@@ -101,31 +88,49 @@ async function bukaScanner(){
 
 try{
 
+const reader=
+document.getElementById(
+"reader"
+);
+
+reader.style.display=
+"block";
+
 
 if(scanner){
 
+try{
+
 await scanner.stop();
 
-scanner.clear();
+}
+catch(e){}
+
+
+try{
+
+await scanner.clear();
+
+}
+catch(e){}
+
 
 scanner=null;
 
-document.getElementById(
-"reader"
-).innerHTML="";
+reader.innerHTML="";
+
+reader.style.display=
+"none";
 
 return;
 
 }
 
 
-
 scanner=
-
 new Html5Qrcode(
 "reader"
 );
-
 
 
 await scanner.start(
@@ -136,17 +141,27 @@ facingMode:"environment"
 
 {
 fps:10,
-qrbox:250
+
+qrbox:{
+width:250,
+height:250
+}
+
 },
 
-hasilScan
+hasilScan,
+
+()=>{}
 
 );
 
 }
 catch(err){
 
-console.log(err);
+console.log(
+"Kamera:",
+err
+);
 
 alert(
 "Gagal membuka kamera"
@@ -162,7 +177,6 @@ async function hasilScan(text){
 
 try{
 
-
 document
 .getElementById(
 "scanInput"
@@ -172,27 +186,29 @@ document
 
 bunyiBeep();
 
-
 cariProduk(text);
-
 
 
 if(scanner){
 
 await scanner.stop();
 
-scanner.clear();
+await scanner.clear();
 
 scanner=null;
 
 }
 
 
-document
-.getElementById(
+const reader=
+document.getElementById(
 "reader"
-)
-.innerHTML="";
+);
+
+reader.innerHTML="";
+
+reader.style.display=
+"none";
 
 
 document
@@ -217,9 +233,7 @@ function bunyiBeep(){
 const audio=
 
 new Audio(
-
 "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
-
 );
 
 audio.play();
@@ -230,11 +244,7 @@ audio.play();
 
 function cekInput(e){
 
-if(
-
-e.key==="Enter"
-
-){
+if(e.key==="Enter"){
 
 cariProduk(
 
@@ -257,8 +267,6 @@ function cariProduk(input){
 input=
 input.trim();
 
-
-
 produk=
 
 MASTER.find(
@@ -272,7 +280,6 @@ x.barcode==input
 );
 
 
-
 if(!produk){
 
 document
@@ -283,11 +290,9 @@ document
 
 "❌ Produk tidak ditemukan";
 
-
 return;
 
 }
-
 
 
 document
@@ -317,7 +322,7 @@ document
 .getElementById(
 "qty"
 )
-focus();
+.focus();
 
 }
 
@@ -336,7 +341,7 @@ return;
 }
 
 
-let body={
+const body={
 
 action:"save",
 
@@ -380,8 +385,7 @@ document
 };
 
 
-
-let res=
+const res=
 
 await fetch(
 
@@ -392,23 +396,19 @@ API,
 method:"POST",
 
 body:
-JSON.stringify(
-body
-)
+JSON.stringify(body)
 
 }
 
 );
 
 
-let data=
+const data=
 await res.json();
-
 
 alert(
 data.message
 );
-
 
 
 document
@@ -417,13 +417,11 @@ document
 )
 .value="";
 
-
 document
 .getElementById(
 "qty"
 )
 .value="";
-
 
 document
 .getElementById(
@@ -434,8 +432,7 @@ document
 "Belum ada produk";
 
 
-produk={};
-
+produk=null;
 
 
 document
