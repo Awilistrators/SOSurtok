@@ -209,3 +209,19 @@ width:120px;
 margin-top:10px;
 
 }
+
+.btnBiru{
+
+background:#1976d2;
+
+color:white;
+
+font-weight:bold;
+
+}
+
+.btnBiru:hover{
+
+opacity:.9;
+
+}
