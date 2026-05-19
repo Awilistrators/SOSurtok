@@ -100,3 +100,21 @@ color:#777;
 cursor:not-allowed;
 
 }
+
+#reader{
+
+margin-top:10px;
+
+overflow:hidden;
+
+border-radius:10px;
+
+}
+
+#reader video{
+
+border-radius:10px;
+
+width:100%;
+
+}
