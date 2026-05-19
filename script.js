@@ -357,7 +357,6 @@ return;
 }
 
 
-
 if(!produk){
 
 tampilPopup(
@@ -436,8 +435,9 @@ JSON.stringify(body)
 const data=
 await res.json();
 
-alert(
-data.message
+
+tampilToast(
+"✅ "+data.message
 );
 
 
@@ -447,11 +447,13 @@ document
 )
 .value="";
 
+
 document
 .getElementById(
 "qty"
 )
 .value="";
+
 
 document
 .getElementById(
@@ -463,6 +465,7 @@ document
 
 
 produk=null;
+
 
 
 document
@@ -503,5 +506,32 @@ document
 .style.display=
 
 "none";
+
+}
+
+function tampilToast(pesan){
+
+const toast=
+
+document.createElement(
+"div"
+);
+
+toast.innerHTML=
+pesan;
+
+toast.className=
+"toast";
+
+document.body.appendChild(
+toast
+);
+
+
+setTimeout(()=>{
+
+toast.remove();
+
+},1500);
 
 }
