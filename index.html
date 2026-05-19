@@ -3,6 +3,8 @@
 
 <head>
 
+<meta charset="UTF-8">
+
 <meta name="viewport"
 content="width=device-width,initial-scale=1">
 
@@ -27,29 +29,45 @@ href="style.css">
 
 </div>
 
-<select id="tim">
+
+<select
+id="tim"
+autocomplete="off">
 
 <option value="">
+
 Pilih Tim
+
 </option>
 
 <option>
+
 Surtok
+
 </option>
 
 <option>
+
 Audit
+
 </option>
 
 </select>
 
+
+
 <input
 id="petugas"
-placeholder="Nama Petugas">
+placeholder="Nama Petugas"
+autocomplete="off">
+
+
 
 <input
 id="rak"
-placeholder="Rak">
+placeholder="Rak"
+autocomplete="off">
+
 
 
 <button
@@ -60,13 +78,23 @@ onclick="bukaScanner()">
 
 </button>
 
-<div id="reader"></div>
+
+
+<div
+id="reader"
+style="display:none;">
+
+</div>
+
+
 
 <input
 id="scanInput"
 placeholder="Scan barcode / kode item manual"
 onkeyup="cekInput(event)"
+autocomplete="off"
 disabled>
+
 
 
 <div id="produk">
@@ -76,10 +104,14 @@ Belum ada produk
 </div>
 
 
+
 <input
 id="qty"
 type="number"
-placeholder="Qty">
+placeholder="Qty"
+min="1"
+autocomplete="off">
+
 
 
 <button
@@ -96,5 +128,4 @@ SIMPAN
 <script src="script.js"></script>
 
 </body>
-
 </html>
