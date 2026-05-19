@@ -1,4 +1,4 @@
-const API="https://script.google.com/macros/s/AKfycbxs5hGNuMgHlNCyDoM1r5TWfgfcs3nXGI3fjJtEmqZKTCspD4FdqviC8YYzPLVMxF5v1A/exec";
+const API="https://script.google.com/macros/s/AKfycbz0ktCLepYsj-PgsTvUkCL2wxBaCEnuTRv88dgTpZ2wdLo3jiylM_rXFfDpbRhAUlr84w/exec";
 
 let MASTER=[];
 let produk=null;
