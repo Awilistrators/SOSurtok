@@ -1,14 +1,16 @@
 const API="https://script.google.com/macros/s/AKfycbyAHGsQouvw1_dP5kSOMqpn_1mVDClLdtoiA80c_HyMRP6UYZgeRaOqADPLr1I77f0jkA/exec";
 
 let MASTER=[];
-
 let produk={};
+let scanner=null;
+
 
 window.onload=async()=>{
 
-loadMaster();
+await loadMaster();
 
 };
+
 
 
 async function loadMaster(){
@@ -29,11 +31,9 @@ document.getElementById(
 );
 
 
-
 scanBtn.disabled=true;
 
 scanInput.disabled=true;
-
 
 
 try{
@@ -48,7 +48,6 @@ mohon tunggu dulu..
 
 
 let res=
-
 await fetch(
 
 API+
@@ -58,12 +57,10 @@ API+
 
 
 let data=
-
 await res.json();
 
 
 MASTER=data.data;
-
 
 
 scanBtn.disabled=false;
@@ -71,12 +68,14 @@ scanBtn.disabled=false;
 scanInput.disabled=false;
 
 
-
 statusDiv.innerHTML=`
 
 ✅ Siap mulai hitung
 
 `;
+
+
+scanInput.focus();
 
 }
 catch(err){
@@ -98,15 +97,38 @@ Periksa koneksi internet
 
 
 
-function bukaScanner(){
+async function bukaScanner(){
 
-const scanner=
+try{
+
+
+if(scanner){
+
+await scanner.stop();
+
+scanner.clear();
+
+scanner=null;
+
+document.getElementById(
+"reader"
+).innerHTML="";
+
+return;
+
+}
+
+
+
+scanner=
 
 new Html5Qrcode(
 "reader"
 );
 
-scanner.start(
+
+
+await scanner.start(
 
 {
 facingMode:"environment"
@@ -122,10 +144,24 @@ hasilScan
 );
 
 }
+catch(err){
+
+console.log(err);
+
+alert(
+"Gagal membuka kamera"
+);
+
+}
+
+}
 
 
 
-function hasilScan(text){
+async function hasilScan(text){
+
+try{
+
 
 document
 .getElementById(
@@ -133,7 +169,60 @@ document
 )
 .value=text;
 
+
+bunyiBeep();
+
+
 cariProduk(text);
+
+
+
+if(scanner){
+
+await scanner.stop();
+
+scanner.clear();
+
+scanner=null;
+
+}
+
+
+document
+.getElementById(
+"reader"
+)
+.innerHTML="";
+
+
+document
+.getElementById(
+"qty"
+)
+.focus();
+
+}
+catch(err){
+
+console.log(err);
+
+}
+
+}
+
+
+
+function bunyiBeep(){
+
+const audio=
+
+new Audio(
+
+"https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+
+);
+
+audio.play();
 
 }
 
@@ -168,6 +257,8 @@ function cariProduk(input){
 input=
 input.trim();
 
+
+
 produk=
 
 MASTER.find(
@@ -190,7 +281,8 @@ document
 )
 .innerHTML=
 
-"Produk tidak ditemukan";
+"❌ Produk tidak ditemukan";
+
 
 return;
 
@@ -206,7 +298,7 @@ document
 
 `
 
-${produk.nama}
+<b>${produk.nama}</b>
 
 <br><br>
 
@@ -219,6 +311,13 @@ Barcode :
 ${produk.barcode}
 
 `;
+
+
+document
+.getElementById(
+"qty"
+)
+focus();
 
 }
 
@@ -305,9 +404,11 @@ body
 let data=
 await res.json();
 
+
 alert(
 data.message
 );
+
 
 
 document
@@ -316,11 +417,13 @@ document
 )
 .value="";
 
+
 document
 .getElementById(
 "qty"
 )
 .value="";
+
 
 document
 .getElementById(
@@ -329,5 +432,16 @@ document
 .innerHTML=
 
 "Belum ada produk";
+
+
+produk={};
+
+
+
+document
+.getElementById(
+"scanInput"
+)
+.focus();
 
 }
