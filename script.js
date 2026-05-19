@@ -10,7 +10,92 @@ await loadMaster();
 
 };
 
+function updatePetugas(){
 
+const tim=
+
+document
+.getElementById(
+"tim"
+)
+.value;
+
+
+const petugas=
+
+document
+.getElementById(
+"petugas"
+);
+
+
+petugas.innerHTML=
+
+`
+<option value="">
+Pilih Petugas
+</option>
+`;
+
+
+let daftar=[];
+
+
+if(
+
+tim=="Surtok"
+
+){
+
+daftar=[
+
+"Asep",
+"Dudi",
+"Riki",
+"Yanto",
+"Ridwan",
+"Wildan"
+
+];
+
+}
+
+
+if(
+
+tim=="Audit"
+
+){
+
+daftar=[
+
+"Agung",
+"Rilo",
+"Maul",
+"Riki"
+
+];
+
+}
+
+
+daftar.forEach(nama=>{
+
+petugas.innerHTML+=
+
+`
+
+<option>
+
+${nama}
+
+</option>
+
+`;
+
+});
+
+}
 
 async function loadMaster(){
 
