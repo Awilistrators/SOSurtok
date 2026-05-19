@@ -618,7 +618,6 @@ document
 async function selesaiRak(){
 
 const rak=
-
 document
 .getElementById(
 "rak"
@@ -662,30 +661,7 @@ rak:rak
 };
 
 
-try{
-
-await fetch(
-
-API,
-
-{
-
-method:"POST",
-
-body:
-JSON.stringify(body)
-
-}
-
-);
-
-}
-catch(e){
-
-console.log(e);
-
-}
-
+/* kosongkan dulu */
 
 document
 .getElementById(
@@ -699,5 +675,34 @@ document
 "rak"
 )
 .focus();
+
+
+/* kirim di belakang */
+
+try{
+
+fetch(
+
+API,
+
+{
+
+method:"POST",
+
+body:
+JSON.stringify(
+body
+)
+
+}
+
+);
+
+}
+catch(err){
+
+console.log(err);
+
+}
 
 }
