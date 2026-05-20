@@ -6,11 +6,15 @@ let scanner=null;
 
 
 
-window.onload=async()=>{
+window.addEventListener(
+
+"load",
+
+async()=>{
 
 await loadMaster();
 
-};
+});
 
 
 function updatePetugas(){
