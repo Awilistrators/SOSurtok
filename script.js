@@ -159,7 +159,7 @@ statusDiv.innerHTML=`
 
 ❌ Gagal memuat master
 <br>
-Periksa koneksi internet
+Hubungi development
 
 `;
 
