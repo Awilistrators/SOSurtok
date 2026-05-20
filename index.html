@@ -1,3 +1,4 @@
+index.html
 <!DOCTYPE html>
 <html>
 
@@ -23,7 +24,6 @@ href="style.css">
 
 <h2>Stock Opname</h2>
 
-
 <div id="masterStatus">
 
 ⏳ Menunggu load master...
@@ -31,22 +31,27 @@ href="style.css">
 </div>
 
 
-
 <select
 id="tim"
 autocomplete="off"
-onchange="updatePetugas();loadRak()">
+onchange="updatePetugas()">
 
 <option value="">
+
 Pilih Tim
+
 </option>
 
 <option>
+
 Surtok
+
 </option>
 
 <option>
+
 Audit
+
 </option>
 
 </select>
@@ -58,43 +63,24 @@ id="petugas"
 autocomplete="off">
 
 <option value="">
+
 Pilih Petugas
+
 </option>
 
 </select>
 
 
 
-<div class="rak-row">
-
 <input
 id="rak"
-list="rakList"
-placeholder="Cari Rak"
+placeholder="Rak"
 autocomplete="off">
-
-<datalist
-id="rakList">
-
-</datalist>
-
-
-<button
-id="btnSelesai"
-class="btnBiru"
-onclick="selesaiRak()">
-
-Selesai
-
-</button>
-
-</div>
 
 
 
 <button
 id="btnScan"
-class="btnBiru"
 onclick="bukaScanner()">
 
 📷 Scan dengan Kamera
@@ -114,12 +100,8 @@ style="display:none;">
 <input
 id="scanInput"
 placeholder="Scan barcode / kode item manual"
-onkeydown="cekInput(event)"
-oninput="resetProduk()"
-onblur="cekBlur()"
+onkeyup="cekInput(event)"
 autocomplete="off"
-autocapitalize="off"
-spellcheck="false"
 disabled>
 
 
@@ -142,20 +124,16 @@ autocomplete="off">
 
 
 <button
-class="btnBiru"
 onclick="simpan()">
 
 SIMPAN
 
 </button>
 
+
 </div>
 
-
-
-<div
-id="popup"
-class="popup">
+<div id="popup" class="popup">
 
 <div class="popup-box">
 
@@ -165,8 +143,7 @@ Pesan
 
 </div>
 
-<button
-onclick="tutupPopup()">
+<button onclick="tutupPopup()">
 
 OK
 
@@ -176,10 +153,7 @@ OK
 
 </div>
 
-
-
 <script src="script.js"></script>
 
 </body>
-
 </html>
