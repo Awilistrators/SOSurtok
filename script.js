@@ -325,6 +325,36 @@ input
 
 }
 
+function cekBlur(){
+
+const input=
+
+document
+.getElementById(
+"scanInput"
+)
+.value
+.trim();
+
+
+if(!input){
+
+return;
+
+}
+
+
+/* kalau produk belum terisi */
+
+if(!produk){
+
+cariProduk(
+input
+);
+
+}
+
+}
 
 function cariProduk(input){
 
