@@ -490,6 +490,25 @@ return;
 }
 
 
+/* validasi rak */
+
+if(
+
+!validasiRak()
+
+){
+
+tampilPopup(
+
+"⚠️ Pilih rak dari daftar"
+
+);
+
+return;
+
+}
+
+
 if(!produk){
 
 tampilPopup(
@@ -508,13 +527,19 @@ const body={
 action:"save",
 
 tim:
-document.getElementById("tim").value,
+document.getElementById(
+"tim"
+).value,
 
 petugas:
-document.getElementById("petugas").value,
+document.getElementById(
+"petugas"
+).value,
 
 rak:
-document.getElementById("rak").value,
+document.getElementById(
+"rak"
+).value,
 
 kode:
 produk.kode,
@@ -526,25 +551,33 @@ barcode:
 produk.barcode,
 
 qty:
-document.getElementById("qty").value
+document.getElementById(
+"qty"
+).value
 
 };
 
 
 
-document.getElementById(
+document
+.getElementById(
 "scanInput"
-).value="";
+)
+.value="";
 
 
-document.getElementById(
+document
+.getElementById(
 "qty"
-).value="";
+)
+.value="";
 
 
-document.getElementById(
+document
+.getElementById(
 "produk"
-).innerHTML=
+)
+.innerHTML=
 
 "Belum ada produk";
 
@@ -552,9 +585,11 @@ document.getElementById(
 produk=null;
 
 
-document.getElementById(
+document
+.getElementById(
 "scanInput"
-).focus();
+)
+.focus();
 
 
 fetch(
@@ -566,7 +601,9 @@ API,
 method:"POST",
 
 body:
-JSON.stringify(body)
+JSON.stringify(
+body
+)
 
 }
 
@@ -794,5 +831,42 @@ catch(err){
 console.log(err);
 
 }
+
+}
+
+function validasiRak(){
+
+const rak=
+
+document
+.getElementById(
+"rak"
+)
+.value
+.trim();
+
+
+const daftarRak=
+
+Array.from(
+
+document
+.getElementById(
+"rakList"
+)
+options
+
+)
+
+.map(
+
+x=>x.value.trim()
+
+);
+
+
+return daftarRak.includes(
+rak
+);
 
 }
