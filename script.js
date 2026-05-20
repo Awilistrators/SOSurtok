@@ -610,6 +610,24 @@ document
 
 async function selesaiRak(){
 
+const tim=
+
+document
+.getElementById(
+"tim"
+)
+.value;
+
+
+const petugas=
+
+document
+.getElementById(
+"petugas"
+)
+.value;
+
+
 const rak=
 
 document
@@ -617,6 +635,25 @@ document
 "rak"
 )
 .value;
+
+
+if(
+
+!tim ||
+
+!petugas
+
+){
+
+tampilPopup(
+
+"⚠️ Harap pilih tim dan petugas dulu"
+
+);
+
+return;
+
+}
 
 
 if(!rak){
@@ -636,15 +673,9 @@ const body={
 
 action:"selesaiRak",
 
-tim:
-document.getElementById(
-"tim"
-).value,
+tim:tim,
 
-petugas:
-document.getElementById(
-"petugas"
-).value,
+petugas:petugas,
 
 rak:rak
 
@@ -665,7 +696,9 @@ document
 .focus();
 
 
-fetch(
+try{
+
+await fetch(
 
 API,
 
@@ -674,11 +707,20 @@ API,
 method:"POST",
 
 body:
-JSON.stringify(body)
+JSON.stringify(
+body
+)
 
 }
 
 );
+
+}
+catch(err){
+
+console.log(err);
+
+}
 
 }
 
