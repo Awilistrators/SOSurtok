@@ -1,20 +1,11 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SO Suryatokoku</title>
-
-<link rel="stylesheet"
-href="style.css">
-
+<link rel="stylesheet" href="style.css">
 <script src="https://unpkg.com/html5-qrcode"></script>
-
 </head>
 
 <body>
@@ -24,111 +15,55 @@ href="style.css">
 <h2>Stock Opname</h2>
 
 <div id="masterStatus">
-
 ⏳ Menunggu load master...
-
 </div>
 
-
-<select
-id="tim"
-autocomplete="off"
-onchange="updatePetugas()">
-
-<option value="">
-
-Pilih Tim
-
-</option>
-
-<option>
-
-Surtok
-
-</option>
-
-<option>
-
-Audit
-
-</option>
-
+<select id="tim" autocomplete="off" onchange="updatePetugas()">
+<option value=""> Pilih Tim </option>
+<option> Surtok </option>
+<option> Audit </option>
 </select>
 
-
-
-<select
-id="petugas"
-autocomplete="off">
-
-<option value="">
-
-Pilih Petugas
-
-</option>
-
+<select id="petugas" autocomplete="off">
+<option value=""> Pilih Petugas </option>
 </select>
 
+<div class="rak-row">
+<input id="rak" placeholder="Rak" autocomplete="off">
+<button id="btnSelesai" class="btnBiru" onclick="selesaiRak()">
+Selesai
+</button>
+</div>
 
-
-<input
-id="rak"
-placeholder="Rak"
-autocomplete="off">
-
-
-
-<button
-id="btnScan"
-onclick="bukaScanner()">
-
+<button id="btnScan" onclick="bukaScanner()">
 📷 Scan dengan Kamera
-
 </button>
 
-
-
-<div
-id="reader"
-style="display:none;">
-
+<div id="reader" style="display:none;">
 </div>
-
-
 
 <input
 id="scanInput"
 placeholder="Scan barcode / kode item manual"
-onkeyup="cekInput(event)"
+onkeydown="cekInput(event)"
+oninput="resetProduk()"
+onblur="cekBlur()"
 autocomplete="off"
 disabled>
 
-
-
 <div id="produk">
-
 Belum ada produk
-
 </div>
 
-
-
-<input
-id="qty"
+<input id="qty"
 type="number"
 placeholder="Qty"
 min="1"
 autocomplete="off">
 
-
-
-<button
-onclick="simpan()">
-
+<button class="btnBiru" onclick="simpan()">
 SIMPAN
-
 </button>
-
 
 </div>
 
@@ -137,15 +72,11 @@ SIMPAN
 <div class="popup-box">
 
 <div id="popupText">
-
 Pesan
-
 </div>
 
 <button onclick="tutupPopup()">
-
 OK
-
 </button>
 
 </div>
