@@ -75,12 +75,10 @@ Pilih Petugas
 <input
 id="rak"
 list="rakList"
-placeholder="Cari Rak">
+placeholder="Cari Rak"
+autocomplete="off">
 
-<datalist
-id="rakList">
-
-</datalist>
+<datalist id="rakList"></datalist>
 
 <button
 id="btnSelesai"
@@ -120,6 +118,8 @@ onkeydown="cekInput(event)"
 oninput="resetProduk()"
 onblur="cekBlur()"
 autocomplete="off"
+autocapitalize="off"
+spellcheck="false"
 disabled>
 
 <div id="produk">
