@@ -329,16 +329,31 @@ audio.play();
 
 function cekInput(e){
 
-if(e.key==="Enter"){
+if(
 
-cariProduk(
+e.key==="Enter"
+
+){
+
+const barcode=
 
 document
 .getElementById(
 "scanInput"
 )
 .value
+.trim();
 
+
+if(!barcode){
+
+return;
+
+}
+
+
+cariProduk(
+barcode
 );
 
 }
@@ -352,15 +367,16 @@ function cariProduk(input){
 input=
 input.trim();
 
+
 produk=
 
 MASTER.find(
 
 x=>
 
-x.kode==input ||
+String(x.kode).trim()==input ||
 
-x.barcode==input
+String(x.barcode).trim()==input
 
 );
 
@@ -373,11 +389,40 @@ document
 )
 .innerHTML=
 
-"❌ Produk tidak ditemukan";
+"❌ Data tidak ditemukan";
+
+
+setTimeout(()=>{
+
+document
+.getElementById(
+"produk"
+)
+.innerHTML=
+
+"Belum ada produk";
+
+
+document
+.getElementById(
+"scanInput"
+)
+.value="";
+
+
+document
+.getElementById(
+"scanInput"
+)
+.focus();
+
+},3000);
+
 
 return;
 
 }
+
 
 
 document
@@ -403,6 +448,8 @@ ${produk.barcode}
 `;
 
 
+/* otomatis pindah qty */
+
 document
 .getElementById(
 "qty"
@@ -410,9 +457,6 @@ document
 .focus();
 
 }
-
-
-
 async function simpan(){
 
 if(
