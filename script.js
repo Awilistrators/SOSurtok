@@ -1,4 +1,4 @@
-const API="https://script.google.com/macros/s/AKfycbyM3x9iCvoNCsqauE-w7VZ5LSkONCuevxJS7YPoQqJ_43p1zzDStS7C_SehcmL46qrgQA/exec";
+const API="https://script.google.com/macros/s/AKfycbwmMlzWK84NrIxk8UuJ9N_MhZUJoKAxmiHYI-hWRw5LHlxw44jFTUZ8IC7DlSgUyzJY1A/exec";
 
 let MASTER=[];
 let produk=null;
@@ -676,14 +676,18 @@ const body={
 action:"selesaiRak",
 
 tim:
-document.getElementById(
+document
+.getElementById(
 "tim"
-).value,
+)
+.value,
 
 petugas:
-document.getElementById(
+document
+.getElementById(
 "petugas"
-).value,
+)
+.value,
 
 rak:rak
 
@@ -697,14 +701,9 @@ document
 .value="";
 
 
-document
-.getElementById(
-"rak"
-)
-.focus();
+try{
 
-
-fetch(
+await fetch(
 
 API,
 
@@ -713,7 +712,48 @@ API,
 method:"POST",
 
 body:
-JSON.stringify(body)
+JSON.stringify(
+body
+)
+
+}
+
+);
+
+
+/* refresh rak */
+
+await loadRak();
+
+
+document
+.getElementById(
+"rak"
+)
+.focus();
+
+}
+catch(err){
+
+console.log(err);
+
+}
+
+}
+
+
+await fetch(
+
+API,
+
+{
+
+method:"POST",
+
+body:
+JSON.stringify(
+body
+)
 
 }
 
