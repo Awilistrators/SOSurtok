@@ -727,3 +727,66 @@ new Audio(
 audio.play();
 
 }
+
+async function loadRak(){
+
+const tim=
+
+document
+.getElementById(
+"tim"
+)
+.value;
+
+
+if(!tim){
+
+return;
+
+}
+
+
+const res=
+
+await fetch(
+
+API+
+
+"?action=rak&tim="+
+
+encodeURIComponent(
+tim
+)
+
+);
+
+
+const data=
+
+await res.json();
+
+
+const rakList=
+
+document
+.getElementById(
+"rakList"
+);
+
+
+rakList.innerHTML="";
+
+
+data.data.forEach(r=>{
+
+rakList.innerHTML+=
+
+`
+
+<option value="${r}">
+
+`;
+
+});
+
+}
