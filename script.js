@@ -680,3 +680,17 @@ JSON.stringify(body)
 );
 
 }
+
+function resetProduk(){
+
+produk=null;
+
+document
+.getElementById(
+"produk"
+)
+.innerHTML=
+
+"Belum ada produk";
+
+}
