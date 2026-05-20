@@ -4,30 +4,27 @@ let MASTER=[];
 let produk=null;
 let scanner=null;
 
+
+
 window.onload=async()=>{
 
 await loadMaster();
 
 };
 
+
+
 function updatePetugas(){
 
 const tim=
-
-document
-.getElementById(
+document.getElementById(
 "tim"
-)
-.value;
-
+).value;
 
 const petugas=
-
-document
-.getElementById(
+document.getElementById(
 "petugas"
 );
-
 
 petugas.innerHTML=
 
@@ -41,11 +38,7 @@ Pilih Petugas
 let daftar=[];
 
 
-if(
-
-tim=="Surtok"
-
-){
+if(tim=="Surtok"){
 
 daftar=[
 
@@ -61,11 +54,7 @@ daftar=[
 }
 
 
-if(
-
-tim=="Audit"
-
-){
+if(tim=="Audit"){
 
 daftar=[
 
@@ -97,6 +86,8 @@ ${nama}
 
 }
 
+
+
 async function loadMaster(){
 
 const statusDiv=
@@ -114,8 +105,11 @@ document.getElementById(
 "scanInput"
 );
 
+
 scanBtn.disabled=true;
+
 scanInput.disabled=true;
+
 
 try{
 
@@ -127,20 +121,34 @@ mohon tunggu dulu..
 
 `;
 
+
 const res=
 
 await fetch(
-API+"?action=master"
+
+API+
+"?action=master&t="+
+Date.now(),
+
+{
+cache:"no-store"
+}
+
 );
+
 
 const data=
 await res.json();
 
-MASTER=data.data||[];
+
+MASTER=
+data.data||[];
 
 
 scanBtn.disabled=false;
+
 scanInput.disabled=false;
+
 
 statusDiv.innerHTML=`
 
@@ -148,12 +156,14 @@ statusDiv.innerHTML=`
 
 `;
 
+
 scanInput.focus();
 
 }
 catch(err){
 
 console.log(err);
+
 
 statusDiv.innerHTML=`
 
@@ -188,16 +198,14 @@ try{
 
 await scanner.stop();
 
-}
-catch(e){}
+}catch(e){}
 
 
 try{
 
 await scanner.clear();
 
-}
-catch(e){}
+}catch(e){}
 
 
 scanner=null;
@@ -213,6 +221,7 @@ return;
 
 
 scanner=
+
 new Html5Qrcode(
 "reader"
 );
@@ -228,8 +237,10 @@ facingMode:"environment"
 fps:10,
 
 qrbox:{
+
 width:250,
 height:250
+
 }
 
 },
@@ -243,10 +254,7 @@ hasilScan,
 }
 catch(err){
 
-console.log(
-"Kamera:",
-err
-);
+console.log(err);
 
 alert(
 "Gagal membuka kamera"
@@ -271,7 +279,10 @@ document
 
 bunyiBeep();
 
-cariProduk(text);
+
+cariProduk(
+text
+);
 
 
 if(scanner){
@@ -295,13 +306,6 @@ reader.innerHTML="";
 reader.style.display=
 "none";
 
-
-document
-.getElementById(
-"qty"
-)
-.focus();
-
 }
 catch(err){
 
@@ -318,7 +322,9 @@ function bunyiBeep(){
 const audio=
 
 new Audio(
+
 "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+
 );
 
 audio.play();
@@ -326,6 +332,8 @@ audio.play();
 }
 
 
+
+/* SCANNER USB / MANUAL */
 
 function cekInput(e){
 
@@ -335,7 +343,10 @@ e.key==="Enter"
 
 ){
 
-const barcode=
+e.preventDefault();
+
+
+const input=
 
 document
 .getElementById(
@@ -345,7 +356,7 @@ document
 .trim();
 
 
-if(!barcode){
+if(!input){
 
 return;
 
@@ -353,7 +364,7 @@ return;
 
 
 cariProduk(
-barcode
+input
 );
 
 }
@@ -365,7 +376,11 @@ barcode
 function cariProduk(input){
 
 input=
-input.trim();
+String(input)
+.trim();
+
+
+produk=null;
 
 
 produk=
@@ -374,11 +389,18 @@ MASTER.find(
 
 x=>
 
-String(x.kode).trim()==input ||
+String(
+x.kode
+)
+.trim()==input ||
 
-String(x.barcode).trim()==input
+String(
+x.barcode
+)
+.trim()==input
 
 );
+
 
 
 if(!produk){
@@ -392,7 +414,15 @@ document
 "❌ Data tidak ditemukan";
 
 
+document
+.getElementById(
+"scanInput"
+)
+.value="";
+
+
 setTimeout(()=>{
+
 
 document
 .getElementById(
@@ -401,13 +431,6 @@ document
 .innerHTML=
 
 "Belum ada produk";
-
-
-document
-.getElementById(
-"scanInput"
-)
-.value="";
 
 
 document
@@ -448,7 +471,9 @@ ${produk.barcode}
 `;
 
 
-/* otomatis pindah qty */
+/* otomatis ke qty */
+
+setTimeout(()=>{
 
 document
 .getElementById(
@@ -456,21 +481,32 @@ document
 )
 .focus();
 
+},50);
+
 }
+
+
+
 async function simpan(){
 
 if(
 
 !document
-.getElementById("tim")
+.getElementById(
+"tim"
+)
 .value ||
 
 !document
-.getElementById("petugas")
+.getElementById(
+"petugas"
+)
 .value ||
 
 !document
-.getElementById("rak")
+.getElementById(
+"rak"
+)
 .value
 
 ){
@@ -504,25 +540,19 @@ const body={
 action:"save",
 
 tim:
-document
-.getElementById(
+document.getElementById(
 "tim"
-)
-.value,
+).value,
 
 petugas:
-document
-.getElementById(
+document.getElementById(
 "petugas"
-)
-.value,
+).value,
 
 rak:
-document
-.getElementById(
+document.getElementById(
 "rak"
-)
-.value,
+).value,
 
 kode:
 produk.kode,
@@ -534,11 +564,9 @@ barcode:
 produk.barcode,
 
 qty:
-document
-.getElementById(
+document.getElementById(
 "qty"
-)
-.value
+).value
 
 };
 
@@ -570,7 +598,6 @@ document
 produk=null;
 
 
-
 document
 .getElementById(
 "scanInput"
@@ -578,12 +605,9 @@ document
 .focus();
 
 
-
 try{
 
-const res=
-
-await fetch(
+fetch(
 
 API,
 
@@ -593,21 +617,10 @@ method:"POST",
 
 body:
 JSON.stringify(
-body)
+body
+)
 
 }
-
-);
-
-
-const data=
-
-await res.json();
-
-
-tampilToast(
-
-"✅ "+data.message
 
 );
 
@@ -616,15 +629,11 @@ catch(err){
 
 console.log(err);
 
-tampilToast(
-
-"❌ Gagal menyimpan"
-
-);
-
 }
 
 }
+
+
 
 function tampilPopup(pesan){
 
@@ -632,7 +641,8 @@ document
 .getElementById(
 "popupText"
 )
-.innerHTML=pesan;
+.innerHTML=
+pesan;
 
 
 document
@@ -659,9 +669,12 @@ document
 
 }
 
+
+
 async function selesaiRak(){
 
 const rak=
+
 document
 .getElementById(
 "rak"
@@ -687,25 +700,19 @@ const body={
 action:"selesaiRak",
 
 tim:
-document
-.getElementById(
+document.getElementById(
 "tim"
-)
-.value,
+).value,
 
 petugas:
-document
-.getElementById(
+document.getElementById(
 "petugas"
-)
-.value,
+).value,
 
 rak:rak
 
 };
 
-
-/* kosongkan dulu */
 
 document
 .getElementById(
@@ -720,8 +727,6 @@ document
 )
 .focus();
 
-
-/* kirim di belakang */
 
 try{
 
