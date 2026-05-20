@@ -376,30 +376,49 @@ input
 function cariProduk(input){
 
 input=
+
 String(input)
-.trim();
+.trim()
+.replace(/\s/g,'');
 
 
 produk=null;
 
 
+/* cari master */
+
 produk=
 
-MASTER.find(
+MASTER.find(x=>{
 
-x=>
 
-String(
-x.kode
-)
-.trim()==input ||
+const kode=
 
 String(
-x.barcode
+x.kode || ""
 )
-.trim()==input
+.trim()
+.replace(/\s/g,'');
+
+
+const barcode=
+
+String(
+x.barcode || ""
+)
+.trim()
+.replace(/\s/g,'');
+
+
+return (
+
+kode===input ||
+
+barcode===input
 
 );
+
+});
 
 
 
@@ -422,7 +441,6 @@ document
 
 
 setTimeout(()=>{
-
 
 document
 .getElementById(
@@ -448,6 +466,8 @@ return;
 
 
 
+/* tampil produk */
+
 document
 .getElementById(
 "produk"
@@ -471,7 +491,7 @@ ${produk.barcode}
 `;
 
 
-/* otomatis ke qty */
+/* pindah qty */
 
 setTimeout(()=>{
 
@@ -484,7 +504,6 @@ document
 },50);
 
 }
-
 
 
 async function simpan(){
