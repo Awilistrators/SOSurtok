@@ -344,15 +344,16 @@ return;
 }
 
 
-/* kalau produk belum terisi */
+/* reset produk lama */
 
-if(!produk){
+produk=null;
+
+
+/* cari ulang */
 
 cariProduk(
 input
 );
-
-}
 
 }
 
