@@ -1,4 +1,4 @@
-const API="https://script.google.com/macros/s/AKfycbx2uHNwMZSjm_d4EAgOXmI-Yg5yK3_2to8n5Qsp2U7Cle_zrxFCty1M8dAxsZjVwnhO6Q/exec";
+const API="https://script.google.com/macros/s/AKfycbwJMx4jfEAio1Q1MtDRuI8i7nOhVxx9dFCMhCA5oV2pphZwxLaGWC0UYInCEkTImkohkg/exec";
 
 let MASTER=[];
 let produk=null;
@@ -11,7 +11,6 @@ window.onload=async()=>{
 await loadMaster();
 
 };
-
 
 function updatePetugas(){
 
@@ -325,37 +324,7 @@ input
 
 }
 
-function cekBlur(){
 
-const input=
-
-document
-.getElementById(
-"scanInput"
-)
-.value
-.trim();
-
-
-if(!input){
-
-return;
-
-}
-
-
-/* reset produk lama */
-
-produk=null;
-
-
-/* cari ulang */
-
-cariProduk(
-input
-);
-
-}
 
 function cariProduk(input){
 
@@ -678,19 +647,5 @@ JSON.stringify(body)
 }
 
 );
-
-}
-
-function resetProduk(){
-
-produk=null;
-
-document
-.getElementById(
-"produk"
-)
-.innerHTML=
-
-"Belum ada produk";
 
 }
