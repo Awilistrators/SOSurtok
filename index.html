@@ -26,16 +26,16 @@ href="style.css">
 
 <div id="masterStatus">
 
-🔄 Memuat master produk...
-<br>
-mohon tunggu dulu..
+⏳ Menunggu load master...
 
 </div>
 
 
+
 <select
 id="tim"
-onchange="updatePetugas();loadRak();">
+autocomplete="off"
+onchange="updatePetugas();loadRak()">
 
 <option value="">
 Pilih Tim
@@ -54,7 +54,8 @@ Audit
 
 
 <select
-id="petugas">
+id="petugas"
+autocomplete="off">
 
 <option value="">
 Pilih Petugas
@@ -79,6 +80,7 @@ id="rakList">
 
 
 <button
+id="btnSelesai"
 class="btnBiru"
 onclick="selesaiRak()">
 
@@ -134,7 +136,8 @@ Belum ada produk
 id="qty"
 type="number"
 placeholder="Qty"
-min="1">
+min="1"
+autocomplete="off">
 
 
 
@@ -162,7 +165,8 @@ Pesan
 
 </div>
 
-<button onclick="tutupPopup()">
+<button
+onclick="tutupPopup()">
 
 OK
 
@@ -172,7 +176,10 @@ OK
 
 </div>
 
+
+
 <script src="script.js"></script>
 
 </body>
+
 </html>
