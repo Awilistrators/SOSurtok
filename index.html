@@ -25,16 +25,15 @@ href="style.css">
 
 <div id="masterStatus">
 
-🔄 Memuat master produk...
-<br>
-mohon tunggu dulu..
+⏳ Menunggu load master...
 
 </div>
 
 
 <select
 id="tim"
-onchange="updatePetugas();loadRak();">
+autocomplete="off"
+onchange="updatePetugas()">
 
 <option value="">
 
@@ -72,26 +71,10 @@ Pilih Petugas
 
 
 
-<div class="rak-row">
-
 <input
 id="rak"
-list="rakList"
-placeholder="Cari Rak"
+placeholder="Rak"
 autocomplete="off">
-
-<datalist id="rakList"></datalist>
-
-<button
-id="btnSelesai"
-class="btnBiru"
-onclick="selesaiRak()">
-
-Selesai
-
-</button>
-
-</div>
 
 
 
@@ -116,13 +99,11 @@ style="display:none;">
 <input
 id="scanInput"
 placeholder="Scan barcode / kode item manual"
-onkeydown="cekInput(event)"
-oninput="resetProduk()"
-onblur="cekBlur()"
+onkeyup="cekInput(event)"
 autocomplete="off"
-autocapitalize="off"
-spellcheck="false"
 disabled>
+
+
 
 <div id="produk">
 
@@ -142,7 +123,6 @@ autocomplete="off">
 
 
 <button
-class="btnBiru"
 onclick="simpan()">
 
 SIMPAN
