@@ -725,3 +725,19 @@ new Audio(
 audio.play();
 
 }
+
+function formatRak(input){
+
+input.value=
+
+input.value
+
+.toUpperCase()
+
+.replace(
+/[^A-Z0-9]/g,
+""
+
+);
+
+}
