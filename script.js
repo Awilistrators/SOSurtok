@@ -13,13 +13,21 @@ await loadMaster();
 };
 
 
+
 function updatePetugas(){
 
 const tim=
-document.getElementById("tim").value;
+
+document.getElementById(
+"tim"
+).value;
+
 
 const petugas=
-document.getElementById("petugas");
+
+document.getElementById(
+"petugas"
+);
 
 
 petugas.innerHTML=
@@ -60,11 +68,11 @@ daftar=[
 }
 
 
-daftar.forEach(nama=>{
+daftar.forEach(n=>{
 
 petugas.innerHTML+=
 
-`<option>${nama}</option>`;
+`<option>${n}</option>`;
 
 });
 
@@ -74,14 +82,20 @@ petugas.innerHTML+=
 
 async function loadMaster(){
 
-const statusDiv=
-document.getElementById("masterStatus");
+const status=
+document.getElementById(
+"masterStatus"
+);
 
 const scanBtn=
-document.getElementById("btnScan");
+document.getElementById(
+"btnScan"
+);
 
 const scanInput=
-document.getElementById("scanInput");
+document.getElementById(
+"scanInput"
+);
 
 
 scanBtn.disabled=true;
@@ -90,55 +104,32 @@ scanInput.disabled=true;
 
 try{
 
-statusDiv.innerHTML=
-
-`🔄 Memuat master produk...
-<br>
-mohon tunggu dulu..`;
-
-
 const res=
 
 await fetch(
 
 API+
 "?action=master&t="+
-Date.now(),
-
-{
-cache:"no-store"
-}
+Date.now()
 
 );
 
 
 const data=
+
 await res.json();
 
 
-MASTER=(data.data||[]).map(item=>({
+MASTER=
 
-kode:
-String(item.kode||"")
-.trim()
-.toUpperCase(),
-
-nama:
-String(item.nama||""),
-
-barcode:
-String(item.barcode||"")
-.trim()
-.toUpperCase()
-
-}));
+data.data||[];
 
 
 scanBtn.disabled=false;
 scanInput.disabled=false;
 
 
-statusDiv.innerHTML=
+status.innerHTML=
 
 "✅ Siap mulai hitung";
 
@@ -148,13 +139,9 @@ scanInput.focus();
 }
 catch(err){
 
-console.log(err);
+status.innerHTML=
 
-statusDiv.innerHTML=
-
-`❌ Gagal memuat master
-<br>
-Hubungi development`;
+"❌ Gagal memuat master";
 
 }
 
@@ -162,161 +149,131 @@ Hubungi development`;
 
 
 
-async function bukaScanner(){
+async function loadRak(){
 
-try{
+const tim=
 
-const reader=
-document.getElementById(
-"reader"
-);
-
-reader.style.display=
-"block";
+document
+.getElementById(
+"tim"
+)
+.value;
 
 
-if(scanner){
-
-await scanner.stop();
-await scanner.clear();
-
-scanner=null;
-
-reader.innerHTML="";
-reader.style.display="none";
+if(!tim){
 
 return;
 
 }
 
 
-scanner=
-new Html5Qrcode(
-"reader"
-);
+const res=
 
+await fetch(
 
-await scanner.start(
+API+
 
-{
-facingMode:"environment"
-},
+"?action=rak&tim="+
 
-{
-fps:10,
-qrbox:250
-},
-
-hasilScan
+tim
 
 );
 
-}
-catch(err){
 
-console.log(err);
+const data=
 
-alert(
-"Gagal membuka kamera"
-);
-
-}
-
-}
+await res.json();
 
 
-
-async function hasilScan(text){
+const rakList=
 
 document
 .getElementById(
-"scanInput"
-)
-.value=text;
-
-
-bunyiBeep();
-
-
-cariProduk(
-text
+"rakList"
 );
 
 
-if(scanner){
+rakList.innerHTML="";
 
-await scanner.stop();
 
-await scanner.clear();
+(data.data||[])
 
-scanner=null;
+.forEach(r=>{
+
+rakList.innerHTML+=
+
+`<option value="${r}">`;
+
+});
 
 }
 
+
+
+function validasiRak(){
+
+const rak=
 
 document
 .getElementById(
-"reader"
+"rak"
 )
-.style.display="none";
-
-}
-
+.value
+.trim();
 
 
-function bunyiBeep(){
+const daftar=
 
-const audio=
+Array.from(
 
-new Audio(
+document
+.getElementById(
+"rakList"
+)
+options
 
-"https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+)
+
+.map(
+
+x=>x.value
 
 );
 
-audio.play();
+
+return daftar.includes(
+rak
+);
 
 }
 
 
-
-/* scanner usb + manual */
 
 function cekInput(e){
 
 if(
 
-e.key==="Enter" ||
+e.key=="Enter" ||
 
-e.key==="NumpadEnter" ||
+e.key=="Tab" ||
 
-e.key==="Tab"
+e.key=="NumpadEnter"
 
 ){
 
 e.preventDefault();
 
+
 setTimeout(()=>{
 
-const input=
+cariProduk(
 
 document
 .getElementById(
 "scanInput"
 )
 .value
-.trim();
 
-
-if(!input){
-
-return;
-
-}
-
-
-cariProduk(
-input
 );
 
 },100);
@@ -324,6 +281,8 @@ input
 }
 
 }
+
+
 
 function cekBlur(){
 
@@ -333,29 +292,22 @@ document
 .getElementById(
 "scanInput"
 )
-.value
-.trim();
+.value;
 
 
-if(!input){
-
-return;
-
-}
-
-
-/* reset produk lama */
+if(input){
 
 produk=null;
-
-
-/* cari ulang */
 
 cariProduk(
 input
 );
 
 }
+
+}
+
+
 
 function cariProduk(input){
 
@@ -366,25 +318,26 @@ String(input)
 .toUpperCase();
 
 
-produk=null;
-
-
 produk=
 
-MASTER.find(x=>{
+MASTER.find(x=>
 
-return(
+String(
+x.kode
+)
+.toUpperCase()==input ||
 
-x.kode===input ||
-
-x.barcode===input
+String(
+x.barcode
+)
+.toUpperCase()==input
 
 );
 
-});
-
 
 if(!produk){
+
+bunyiError();
 
 document
 .getElementById(
@@ -395,36 +348,12 @@ document
 "❌ Data tidak ditemukan";
 
 
-document
-.getElementById(
-"scanInput"
-)
-.value="";
-
-
-setTimeout(()=>{
-
-document
-.getElementById(
-"produk"
-)
-.innerHTML=
-
-"Belum ada produk";
-
-
-document
-.getElementById(
-"scanInput"
-)
-.focus();
-
-},3000);
-
 return;
 
 }
 
+
+bunyiSukses();
 
 
 document
@@ -437,253 +366,33 @@ document
 
 <b>${produk.nama}</b>
 
-<br><br>
+<br>
 
-Kode:
+Kode :
 ${produk.kode}
 
 <br>
 
-Barcode:
+Barcode :
 ${produk.barcode}
 
 `;
 
 
-setTimeout(()=>{
-
 document
 .getElementById(
 "qty"
 )
 .focus();
 
-},50);
-
 }
 
 
-
-async function simpan(){
-
-if(
-
-!document.getElementById("tim").value ||
-
-!document.getElementById("petugas").value ||
-
-!document.getElementById("rak").value
-
-){
-
-tampilPopup(
-
-"⚠️ Harap pilih tim,<br><br>isi nama petugas dan rak"
-
-);
-
-return;
-
-}
-
-
-if(!produk){
-
-tampilPopup(
-
-"⚠️ Harap scan atau pilih produk"
-
-);
-
-return;
-
-}
-
-
-const body={
-
-action:"save",
-
-tim:
-document.getElementById("tim").value,
-
-petugas:
-document.getElementById("petugas").value,
-
-rak:
-document.getElementById("rak").value,
-
-kode:
-produk.kode,
-
-nama:
-produk.nama,
-
-barcode:
-produk.barcode,
-
-qty:
-document.getElementById("qty").value
-
-};
-
-
-
-document.getElementById(
-"scanInput"
-).value="";
-
-
-document.getElementById(
-"qty"
-).value="";
-
-
-document.getElementById(
-"produk"
-).innerHTML=
-
-"Belum ada produk";
-
-
-produk=null;
-
-
-document.getElementById(
-"scanInput"
-).focus();
-
-
-fetch(
-
-API,
-
-{
-
-method:"POST",
-
-body:
-JSON.stringify(body)
-
-}
-
-);
-
-}
-
-
-
-function tampilPopup(pesan){
-
-document
-.getElementById(
-"popupText"
-)
-.innerHTML=
-pesan;
-
-
-document
-.getElementById(
-"popup"
-)
-.style.display=
-"flex";
-
-}
-
-
-
-function tutupPopup(){
-
-document
-.getElementById(
-"popup"
-)
-.style.display=
-"none";
-
-}
-
-
-
-async function selesaiRak(){
-
-const rak=
-
-document
-.getElementById(
-"rak"
-)
-.value;
-
-
-if(!rak){
-
-tampilPopup(
-
-"⚠️ Rak kosong"
-
-);
-
-return;
-
-}
-
-
-const body={
-
-action:"selesaiRak",
-
-tim:
-document.getElementById(
-"tim"
-).value,
-
-petugas:
-document.getElementById(
-"petugas"
-).value,
-
-rak:rak
-
-};
-
-
-document
-.getElementById(
-"rak"
-)
-.value="";
-
-
-document
-.getElementById(
-"rak"
-)
-.focus();
-
-
-fetch(
-
-API,
-
-{
-
-method:"POST",
-
-body:
-JSON.stringify(body)
-
-}
-
-);
-
-}
 
 function resetProduk(){
 
 produk=null;
+
 
 document
 .getElementById(
