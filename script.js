@@ -1,4 +1,4 @@
-const API="https://script.google.com/macros/s/AKfycbwmMlzWK84NrIxk8UuJ9N_MhZUJoKAxmiHYI-hWRw5LHlxw44jFTUZ8IC7DlSgUyzJY1A/exec";
+const API="https://script.google.com/macros/s/AKfycbx2uHNwMZSjm_d4EAgOXmI-Yg5yK3_2to8n5Qsp2U7Cle_zrxFCty1M8dAxsZjVwnhO6Q/exec";
 
 let MASTER=[];
 let produk=null;
@@ -6,15 +6,11 @@ let scanner=null;
 
 
 
-window.addEventListener(
-
-"load",
-
-async()=>{
+window.onload=async()=>{
 
 await loadMaster();
 
-});
+};
 
 
 function updatePetugas(){
@@ -390,8 +386,6 @@ x.barcode===input
 
 if(!produk){
 
-bunyiError();
-
 document
 .getElementById(
 "produk"
@@ -432,7 +426,6 @@ return;
 }
 
 
-bunyiSukses();
 
 document
 .getElementById(
@@ -494,25 +487,6 @@ return;
 }
 
 
-/* validasi rak */
-
-if(
-
-!validasiRak()
-
-){
-
-tampilPopup(
-
-"⚠️ Pilih rak dari daftar"
-
-);
-
-return;
-
-}
-
-
 if(!produk){
 
 tampilPopup(
@@ -531,19 +505,13 @@ const body={
 action:"save",
 
 tim:
-document.getElementById(
-"tim"
-).value,
+document.getElementById("tim").value,
 
 petugas:
-document.getElementById(
-"petugas"
-).value,
+document.getElementById("petugas").value,
 
 rak:
-document.getElementById(
-"rak"
-).value,
+document.getElementById("rak").value,
 
 kode:
 produk.kode,
@@ -555,33 +523,25 @@ barcode:
 produk.barcode,
 
 qty:
-document.getElementById(
-"qty"
-).value
+document.getElementById("qty").value
 
 };
 
 
 
-document
-.getElementById(
+document.getElementById(
 "scanInput"
-)
-.value="";
+).value="";
 
 
-document
-.getElementById(
+document.getElementById(
 "qty"
-)
-.value="";
+).value="";
 
 
-document
-.getElementById(
+document.getElementById(
 "produk"
-)
-.innerHTML=
+).innerHTML=
 
 "Belum ada produk";
 
@@ -589,11 +549,9 @@ document
 produk=null;
 
 
-document
-.getElementById(
+document.getElementById(
 "scanInput"
-)
-.focus();
+).focus();
 
 
 fetch(
@@ -605,9 +563,7 @@ API,
 method:"POST",
 
 body:
-JSON.stringify(
-body
-)
+JSON.stringify(body)
 
 }
 
@@ -680,18 +636,14 @@ const body={
 action:"selesaiRak",
 
 tim:
-document
-.getElementById(
+document.getElementById(
 "tim"
-)
-.value,
+).value,
 
 petugas:
-document
-.getElementById(
+document.getElementById(
 "petugas"
-)
-.value,
+).value,
 
 rak:rak
 
@@ -705,48 +657,14 @@ document
 .value="";
 
 
-try{
-
-await fetch(
-
-API,
-
-{
-
-method:"POST",
-
-body:
-JSON.stringify(
-body
-)
-
-}
-
-);
-
-
-/* refresh rak */
-
-await loadRak();
-
-
 document
 .getElementById(
 "rak"
 )
 .focus();
 
-}
-catch(err){
 
-console.log(err);
-
-}
-
-}
-
-
-await fetch(
+fetch(
 
 API,
 
@@ -755,9 +673,7 @@ API,
 method:"POST",
 
 body:
-JSON.stringify(
-body
-)
+JSON.stringify(body)
 
 }
 
@@ -776,141 +692,5 @@ document
 .innerHTML=
 
 "Belum ada produk";
-
-}
-
-function bunyiSukses(){
-
-const audio=
-
-new Audio(
-
-"https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
-
-);
-
-audio.play();
-
-}
-
-
-
-function bunyiError(){
-
-const audio=
-
-new Audio(
-
-"https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"
-
-);
-
-audio.play();
-
-}
-
-async function loadRak(){
-
-const tim=
-document
-.getElementById(
-"tim"
-)
-.value;
-
-
-if(!tim){
-
-return;
-
-}
-
-
-try{
-
-const res=
-
-await fetch(
-
-API+
-
-"?action=rak&tim="+
-
-encodeURIComponent(
-tim
-)
-
-);
-
-
-const data=
-
-await res.json();
-
-
-const rakList=
-
-document
-.getElementById(
-"rakList"
-);
-
-
-rakList.innerHTML="";
-
-
-(data.data||[])
-
-.forEach(r=>{
-
-rakList.innerHTML+=
-
-`<option value="${r}">`;
-
-});
-
-}
-catch(err){
-
-console.log(err);
-
-}
-
-}
-
-function validasiRak(){
-
-const rak=
-
-document
-.getElementById(
-"rak"
-)
-.value
-.trim();
-
-
-const daftarRak=
-
-Array.from(
-
-document
-.getElementById(
-"rakList"
-)
-options
-
-)
-
-.map(
-
-x=>x.value.trim()
-
-);
-
-
-return daftarRak.includes(
-rak
-);
 
 }
