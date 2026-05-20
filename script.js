@@ -141,8 +141,18 @@ const data=
 await res.json();
 
 
-MASTER=
-data.data||[];
+MASTER=(data.data||[]).map(item=>({
+
+kode:
+String(item.kode),
+
+nama:
+String(item.nama),
+
+barcode:
+String(item.barcode)
+
+}));
 
 
 scanBtn.disabled=false;
