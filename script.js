@@ -17,22 +17,15 @@ await loadMaster();
 function updatePetugas(){
 
 const tim=
-document.getElementById(
-"tim"
-).value;
+document.getElementById("tim").value;
 
 const petugas=
-document.getElementById(
-"petugas"
-);
+document.getElementById("petugas");
+
 
 petugas.innerHTML=
 
-`
-<option value="">
-Pilih Petugas
-</option>
-`;
+'<option value="">Pilih Petugas</option>';
 
 
 let daftar=[];
@@ -72,15 +65,7 @@ daftar.forEach(nama=>{
 
 petugas.innerHTML+=
 
-`
-
-<option>
-
-${nama}
-
-</option>
-
-`;
+`<option>${nama}</option>`;
 
 });
 
@@ -91,35 +76,26 @@ ${nama}
 async function loadMaster(){
 
 const statusDiv=
-document.getElementById(
-"masterStatus"
-);
+document.getElementById("masterStatus");
 
 const scanBtn=
-document.getElementById(
-"btnScan"
-);
+document.getElementById("btnScan");
 
 const scanInput=
-document.getElementById(
-"scanInput"
-);
+document.getElementById("scanInput");
 
 
 scanBtn.disabled=true;
-
 scanInput.disabled=true;
 
 
 try{
 
-statusDiv.innerHTML=`
+statusDiv.innerHTML=
 
-🔄 Memuat master produk...
+`🔄 Memuat master produk...
 <br>
-mohon tunggu dulu..
-
-`;
+mohon tunggu dulu..`;
 
 
 const res=
@@ -144,27 +120,28 @@ await res.json();
 MASTER=(data.data||[]).map(item=>({
 
 kode:
-String(item.kode),
+String(item.kode||"")
+.trim()
+.toUpperCase(),
 
 nama:
-String(item.nama),
+String(item.nama||""),
 
 barcode:
-String(item.barcode)
+String(item.barcode||"")
+.trim()
+.toUpperCase()
 
 }));
 
 
 scanBtn.disabled=false;
-
 scanInput.disabled=false;
 
 
-statusDiv.innerHTML=`
+statusDiv.innerHTML=
 
-✅ Siap mulai hitung
-
-`;
+"✅ Siap mulai hitung";
 
 
 scanInput.focus();
@@ -174,14 +151,11 @@ catch(err){
 
 console.log(err);
 
+statusDiv.innerHTML=
 
-statusDiv.innerHTML=`
-
-❌ Gagal memuat master
+`❌ Gagal memuat master
 <br>
-Hubungi development
-
-`;
+Hubungi development`;
 
 }
 
@@ -204,26 +178,13 @@ reader.style.display=
 
 if(scanner){
 
-try{
-
 await scanner.stop();
-
-}catch(e){}
-
-
-try{
-
 await scanner.clear();
-
-}catch(e){}
-
 
 scanner=null;
 
 reader.innerHTML="";
-
-reader.style.display=
-"none";
+reader.style.display="none";
 
 return;
 
@@ -231,7 +192,6 @@ return;
 
 
 scanner=
-
 new Html5Qrcode(
 "reader"
 );
@@ -245,19 +205,10 @@ facingMode:"environment"
 
 {
 fps:10,
-
-qrbox:{
-
-width:250,
-height:250
-
-}
-
+qrbox:250
 },
 
-hasilScan,
-
-()=>{}
+hasilScan
 
 );
 
@@ -277,8 +228,6 @@ alert(
 
 
 async function hasilScan(text){
-
-try{
 
 document
 .getElementById(
@@ -306,22 +255,11 @@ scanner=null;
 }
 
 
-const reader=
-document.getElementById(
+document
+.getElementById(
 "reader"
-);
-
-reader.innerHTML="";
-
-reader.style.display=
-"none";
-
-}
-catch(err){
-
-console.log(err);
-
-}
+)
+.style.display="none";
 
 }
 
@@ -343,7 +281,7 @@ audio.play();
 
 
 
-/* SCANNER USB / MANUAL */
+/* scanner usb + manual */
 
 function cekInput(e){
 
@@ -356,6 +294,9 @@ e.key==="NumpadEnter"
 ){
 
 e.preventDefault();
+
+
+setTimeout(()=>{
 
 const input=
 
@@ -374,15 +315,11 @@ return;
 }
 
 
-/* sedikit delay agar scanner selesai isi */
-
-setTimeout(()=>{
-
 cariProduk(
 input
 );
 
-},50);
+},100);
 
 }
 
@@ -395,41 +332,22 @@ function cariProduk(input){
 input=
 
 String(input)
-.trim();
+.trim()
+.toUpperCase();
+
 
 produk=null;
 
-
-/* debug sementara */
-
-console.log(
-"Cari:",
-input
-);
 
 produk=
 
 MASTER.find(x=>{
 
-const kode=
+return(
 
-String(
-x.kode || ""
-)
-.trim();
+x.kode===input ||
 
-const barcode=
-
-String(
-x.barcode || ""
-)
-.trim();
-
-return (
-
-kode===input ||
-
-barcode===input
+x.barcode===input
 
 );
 
@@ -478,6 +396,7 @@ return;
 }
 
 
+
 document
 .getElementById(
 "produk"
@@ -490,12 +409,12 @@ document
 
 <br><br>
 
-Kode :
+Kode:
 ${produk.kode}
 
 <br>
 
-Barcode :
+Barcode:
 ${produk.barcode}
 
 `;
@@ -514,27 +433,16 @@ document
 }
 
 
+
 async function simpan(){
 
 if(
 
-!document
-.getElementById(
-"tim"
-)
-.value ||
+!document.getElementById("tim").value ||
 
-!document
-.getElementById(
-"petugas"
-)
-.value ||
+!document.getElementById("petugas").value ||
 
-!document
-.getElementById(
-"rak"
-)
-.value
+!document.getElementById("rak").value
 
 ){
 
@@ -567,19 +475,13 @@ const body={
 action:"save",
 
 tim:
-document.getElementById(
-"tim"
-).value,
+document.getElementById("tim").value,
 
 petugas:
-document.getElementById(
-"petugas"
-).value,
+document.getElementById("petugas").value,
 
 rak:
-document.getElementById(
-"rak"
-).value,
+document.getElementById("rak").value,
 
 kode:
 produk.kode,
@@ -591,33 +493,25 @@ barcode:
 produk.barcode,
 
 qty:
-document.getElementById(
-"qty"
-).value
+document.getElementById("qty").value
 
 };
 
 
 
-document
-.getElementById(
+document.getElementById(
 "scanInput"
-)
-.value="";
+).value="";
 
 
-document
-.getElementById(
+document.getElementById(
 "qty"
-)
-.value="";
+).value="";
 
 
-document
-.getElementById(
+document.getElementById(
 "produk"
-)
-.innerHTML=
+).innerHTML=
 
 "Belum ada produk";
 
@@ -625,14 +519,10 @@ document
 produk=null;
 
 
-document
-.getElementById(
+document.getElementById(
 "scanInput"
-)
-.focus();
+).focus();
 
-
-try{
 
 fetch(
 
@@ -643,20 +533,11 @@ API,
 method:"POST",
 
 body:
-JSON.stringify(
-body
-)
+JSON.stringify(body)
 
 }
 
 );
-
-}
-catch(err){
-
-console.log(err);
-
-}
 
 }
 
@@ -677,7 +558,6 @@ document
 "popup"
 )
 .style.display=
-
 "flex";
 
 }
@@ -691,7 +571,6 @@ document
 "popup"
 )
 .style.display=
-
 "none";
 
 }
@@ -755,8 +634,6 @@ document
 .focus();
 
 
-try{
-
 fetch(
 
 API,
@@ -766,19 +643,10 @@ API,
 method:"POST",
 
 body:
-JSON.stringify(
-body
-)
+JSON.stringify(body)
 
 }
 
 );
-
-}
-catch(err){
-
-console.log(err);
-
-}
 
 }
