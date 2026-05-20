@@ -731,7 +731,6 @@ audio.play();
 async function loadRak(){
 
 const tim=
-
 document
 .getElementById(
 "tim"
@@ -745,6 +744,8 @@ return;
 
 }
 
+
+try{
 
 const res=
 
@@ -777,16 +778,21 @@ document
 rakList.innerHTML="";
 
 
-data.data.forEach(r=>{
+(data.data||[])
+
+.forEach(r=>{
 
 rakList.innerHTML+=
 
-`
-
-<option value="${r}">
-
-`;
+`<option value="${r}">`;
 
 });
+
+}
+catch(err){
+
+console.log(err);
+
+}
 
 }
