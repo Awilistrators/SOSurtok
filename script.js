@@ -5,7 +5,6 @@ let produk=null;
 let scanner=null;
 
 
-
 window.onload=async()=>{
 
 await loadMaster();
@@ -17,14 +16,12 @@ await loadMaster();
 function updatePetugas(){
 
 const tim=
-
 document.getElementById(
 "tim"
 ).value;
 
 
 const petugas=
-
 document.getElementById(
 "petugas"
 );
@@ -99,10 +96,16 @@ document.getElementById(
 
 
 scanBtn.disabled=true;
+
 scanInput.disabled=true;
 
 
 try{
+
+status.innerHTML=
+
+"🔄 Memuat master produk...";
+
 
 const res=
 
@@ -120,12 +123,35 @@ const data=
 await res.json();
 
 
-MASTER=
+MASTER=(data.data||[])
 
-data.data||[];
+
+.map(x=>({
+
+kode:
+String(
+x.kode
+)
+.trim()
+.toUpperCase(),
+
+nama:
+String(
+x.nama
+),
+
+barcode:
+String(
+x.barcode
+)
+.trim()
+.toUpperCase()
+
+}));
 
 
 scanBtn.disabled=false;
+
 scanInput.disabled=false;
 
 
@@ -133,8 +159,6 @@ status.innerHTML=
 
 "✅ Siap mulai hitung";
 
-
-scanInput.focus();
 
 }
 catch(err){
@@ -160,11 +184,7 @@ document
 .value;
 
 
-if(!tim){
-
-return;
-
-}
+if(!tim)return;
 
 
 const res=
@@ -218,11 +238,10 @@ document
 .getElementById(
 "rak"
 )
-.value
-.trim();
+.value;
 
 
-const daftar=
+const list=
 
 Array.from(
 
@@ -234,16 +253,29 @@ options
 
 )
 
-.map(
-
-x=>x.value
-
-);
+.map(x=>x.value);
 
 
-return daftar.includes(
+return list.includes(
 rak
 );
+
+}
+
+
+
+function resetProduk(){
+
+produk=null;
+
+
+document
+.getElementById(
+"produk"
+)
+.innerHTML=
+
+"Belum ada produk";
 
 }
 
@@ -322,15 +354,9 @@ produk=
 
 MASTER.find(x=>
 
-String(
-x.kode
-)
-.toUpperCase()==input ||
+x.kode==input ||
 
-String(
-x.barcode
-)
-.toUpperCase()==input
+x.barcode==input
 
 );
 
@@ -346,7 +372,6 @@ document
 .innerHTML=
 
 "❌ Data tidak ditemukan";
-
 
 return;
 
@@ -384,22 +409,5 @@ document
 "qty"
 )
 .focus();
-
-}
-
-
-
-function resetProduk(){
-
-produk=null;
-
-
-document
-.getElementById(
-"produk"
-)
-.innerHTML=
-
-"Belum ada produk";
 
 }
