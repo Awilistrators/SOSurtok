@@ -29,7 +29,11 @@
 </select>
 
 <div class="rak-row">
-<input id="rak" placeholder="Rak" autocomplete="off">
+<input
+id="rak"
+placeholder="Rak"
+autocomplete="off"
+oninput="formatRak(this)">
 <button id="btnSelesai" class="btnBiru" onclick="selesaiRak()">
 Selesai
 </button>
