@@ -324,7 +324,37 @@ input
 
 }
 
+function cekBlur(){
 
+const input=
+
+document
+.getElementById(
+"scanInput"
+)
+.value
+.trim();
+
+
+if(!input){
+
+return;
+
+}
+
+
+/* reset produk lama */
+
+produk=null;
+
+
+/* cari ulang */
+
+cariProduk(
+input
+);
+
+}
 
 function cariProduk(input){
 
@@ -354,6 +384,8 @@ x.barcode===input
 
 
 if(!produk){
+
+bunyiError();
 
 document
 .getElementById(
@@ -394,7 +426,7 @@ return;
 
 }
 
-
+bunyiSukses();
 
 document
 .getElementById(
@@ -647,5 +679,49 @@ JSON.stringify(body)
 }
 
 );
+
+}
+
+function resetProduk(){
+
+produk=null;
+
+document
+.getElementById(
+"produk"
+)
+.innerHTML=
+
+"Belum ada produk";
+
+}
+
+function bunyiSukses(){
+
+const audio=
+
+new Audio(
+
+"https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
+
+);
+
+audio.play();
+
+}
+
+
+
+function bunyiError(){
+
+const audio=
+
+new Audio(
+
+"https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"
+
+);
+
+audio.play();
 
 }
