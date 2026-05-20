@@ -386,6 +386,8 @@ x.barcode===input
 
 if(!produk){
 
+bunyiError();
+
 document
 .getElementById(
 "produk"
@@ -426,6 +428,7 @@ return;
 }
 
 
+bunyiSukses();
 
 document
 .getElementById(
@@ -692,5 +695,35 @@ document
 .innerHTML=
 
 "Belum ada produk";
+
+}
+
+function bunyiSukses(){
+
+const audio=
+
+new Audio(
+
+"https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
+
+);
+
+audio.play();
+
+}
+
+
+
+function bunyiError(){
+
+const audio=
+
+new Audio(
+
+"https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"
+
+);
+
+audio.play();
 
 }
