@@ -12,7 +12,54 @@ await loadMaster();
 
 };
 
+document.addEventListener(
 
+"DOMContentLoaded",
+
+()=>{
+
+document
+.getElementById(
+"scanInput"
+)
+.addEventListener(
+
+"input",
+
+function(){
+
+clearTimeout(
+window.scanTimer
+);
+
+
+window.scanTimer=
+
+setTimeout(()=>{
+
+const input=
+
+this.value
+.trim();
+
+
+if(
+
+input.length>=3
+
+){
+
+cariProduk(
+input
+);
+
+}
+
+},300);
+
+});
+
+});
 
 function updatePetugas(){
 
@@ -289,12 +336,13 @@ if(
 
 e.key==="Enter" ||
 
-e.key==="NumpadEnter"
+e.key==="NumpadEnter" ||
+
+e.key==="Tab"
 
 ){
 
 e.preventDefault();
-
 
 setTimeout(()=>{
 
@@ -324,7 +372,6 @@ input
 }
 
 }
-
 
 
 function cariProduk(input){
