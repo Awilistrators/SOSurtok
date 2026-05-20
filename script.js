@@ -5,6 +5,7 @@ let produk=null;
 let scanner=null;
 
 
+
 window.onload=async()=>{
 
 await loadMaster();
@@ -12,19 +13,13 @@ await loadMaster();
 };
 
 
-
 function updatePetugas(){
 
 const tim=
-document.getElementById(
-"tim"
-).value;
-
+document.getElementById("tim").value;
 
 const petugas=
-document.getElementById(
-"petugas"
-);
+document.getElementById("petugas");
 
 
 petugas.innerHTML=
@@ -65,11 +60,11 @@ daftar=[
 }
 
 
-daftar.forEach(n=>{
+daftar.forEach(nama=>{
 
 petugas.innerHTML+=
 
-`<option>${n}</option>`;
+`<option>${nama}</option>`;
 
 });
 
@@ -79,32 +74,27 @@ petugas.innerHTML+=
 
 async function loadMaster(){
 
-const status=
-document.getElementById(
-"masterStatus"
-);
+const statusDiv=
+document.getElementById("masterStatus");
 
 const scanBtn=
-document.getElementById(
-"btnScan"
-);
+document.getElementById("btnScan");
 
 const scanInput=
-document.getElementById(
-"scanInput"
-);
+document.getElementById("scanInput");
 
 
 scanBtn.disabled=true;
-
 scanInput.disabled=true;
 
 
 try{
 
-status.innerHTML=
+statusDiv.innerHTML=
 
-"🔄 Memuat master produk...";
+`🔄 Memuat master produk...
+<br>
+mohon tunggu dulu..`;
 
 
 const res=
@@ -113,37 +103,31 @@ await fetch(
 
 API+
 "?action=master&t="+
-Date.now()
+Date.now(),
+
+{
+cache:"no-store"
+}
 
 );
 
 
 const data=
-
 await res.json();
 
 
-MASTER=(data.data||[])
-
-
-.map(x=>({
+MASTER=(data.data||[]).map(item=>({
 
 kode:
-String(
-x.kode
-)
+String(item.kode||"")
 .trim()
 .toUpperCase(),
 
 nama:
-String(
-x.nama
-),
+String(item.nama||""),
 
 barcode:
-String(
-x.barcode
-)
+String(item.barcode||"")
 .trim()
 .toUpperCase()
 
@@ -151,21 +135,26 @@ x.barcode
 
 
 scanBtn.disabled=false;
-
 scanInput.disabled=false;
 
 
-status.innerHTML=
+statusDiv.innerHTML=
 
 "✅ Siap mulai hitung";
 
 
+scanInput.focus();
+
 }
 catch(err){
 
-status.innerHTML=
+console.log(err);
 
-"❌ Gagal memuat master";
+statusDiv.innerHTML=
+
+`❌ Gagal memuat master
+<br>
+Hubungi development`;
 
 }
 
@@ -173,139 +162,161 @@ status.innerHTML=
 
 
 
-async function loadRak(){
+async function bukaScanner(){
 
-const tim=
+try{
 
-document
-.getElementById(
-"tim"
-)
-.value;
+const reader=
+document.getElementById(
+"reader"
+);
+
+reader.style.display=
+"block";
 
 
-if(!tim)return;
+if(scanner){
+
+await scanner.stop();
+await scanner.clear();
+
+scanner=null;
+
+reader.innerHTML="";
+reader.style.display="none";
+
+return;
+
+}
 
 
-const res=
-
-await fetch(
-
-API+
-
-"?action=rak&tim="+
-
-tim
-
+scanner=
+new Html5Qrcode(
+"reader"
 );
 
 
-const data=
+await scanner.start(
 
-await res.json();
+{
+facingMode:"environment"
+},
 
+{
+fps:10,
+qrbox:250
+},
 
-const rakList=
+hasilScan
 
-document
-.getElementById(
-"rakList"
 );
 
-
-rakList.innerHTML="";
-
-
-(data.data||[])
-
-.forEach(r=>{
-
-rakList.innerHTML+=
-
-`<option value="${r}">`;
-
-});
-
 }
+catch(err){
 
+console.log(err);
 
-
-function validasiRak(){
-
-const rak=
-
-document
-.getElementById(
-"rak"
-)
-.value;
-
-
-const list=
-
-Array.from(
-
-document
-.getElementById(
-"rakList"
-)
-options
-
-)
-
-.map(x=>x.value);
-
-
-return list.includes(
-rak
+alert(
+"Gagal membuka kamera"
 );
 
 }
 
+}
 
 
-function resetProduk(){
 
-produk=null;
-
+async function hasilScan(text){
 
 document
 .getElementById(
-"produk"
+"scanInput"
 )
-.innerHTML=
+.value=text;
 
-"Belum ada produk";
+
+bunyiBeep();
+
+
+cariProduk(
+text
+);
+
+
+if(scanner){
+
+await scanner.stop();
+
+await scanner.clear();
+
+scanner=null;
 
 }
 
 
+document
+.getElementById(
+"reader"
+)
+.style.display="none";
+
+}
+
+
+
+function bunyiBeep(){
+
+const audio=
+
+new Audio(
+
+"https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+
+);
+
+audio.play();
+
+}
+
+
+
+/* scanner usb + manual */
 
 function cekInput(e){
 
 if(
 
-e.key=="Enter" ||
+e.key==="Enter" ||
 
-e.key=="Tab" ||
+e.key==="NumpadEnter" ||
 
-e.key=="NumpadEnter"
+e.key==="Tab"
 
 ){
 
 e.preventDefault();
 
-
 setTimeout(()=>{
 
-cariProduk(
+const input=
 
 document
 .getElementById(
 "scanInput"
 )
 .value
+.trim();
 
+
+if(!input){
+
+return;
+
+}
+
+
+cariProduk(
+input
 );
 
 },100);
@@ -313,8 +324,6 @@ document
 }
 
 }
-
-
 
 function cekBlur(){
 
@@ -324,22 +333,29 @@ document
 .getElementById(
 "scanInput"
 )
-.value;
+.value
+.trim();
 
 
-if(input){
+if(!input){
+
+return;
+
+}
+
+
+/* reset produk lama */
 
 produk=null;
+
+
+/* cari ulang */
 
 cariProduk(
 input
 );
 
 }
-
-}
-
-
 
 function cariProduk(input){
 
@@ -350,20 +366,25 @@ String(input)
 .toUpperCase();
 
 
+produk=null;
+
+
 produk=
 
-MASTER.find(x=>
+MASTER.find(x=>{
 
-x.kode==input ||
+return(
 
-x.barcode==input
+x.kode===input ||
+
+x.barcode===input
 
 );
 
+});
+
 
 if(!produk){
-
-bunyiError();
 
 document
 .getElementById(
@@ -373,12 +394,37 @@ document
 
 "❌ Data tidak ditemukan";
 
+
+document
+.getElementById(
+"scanInput"
+)
+.value="";
+
+
+setTimeout(()=>{
+
+document
+.getElementById(
+"produk"
+)
+.innerHTML=
+
+"Belum ada produk";
+
+
+document
+.getElementById(
+"scanInput"
+)
+.focus();
+
+},3000);
+
 return;
 
 }
 
-
-bunyiSukses();
 
 
 document
@@ -391,23 +437,260 @@ document
 
 <b>${produk.nama}</b>
 
-<br>
+<br><br>
 
-Kode :
+Kode:
 ${produk.kode}
 
 <br>
 
-Barcode :
+Barcode:
 ${produk.barcode}
 
 `;
 
+
+setTimeout(()=>{
 
 document
 .getElementById(
 "qty"
 )
 .focus();
+
+},50);
+
+}
+
+
+
+async function simpan(){
+
+if(
+
+!document.getElementById("tim").value ||
+
+!document.getElementById("petugas").value ||
+
+!document.getElementById("rak").value
+
+){
+
+tampilPopup(
+
+"⚠️ Harap pilih tim,<br><br>isi nama petugas dan rak"
+
+);
+
+return;
+
+}
+
+
+if(!produk){
+
+tampilPopup(
+
+"⚠️ Harap scan atau pilih produk"
+
+);
+
+return;
+
+}
+
+
+const body={
+
+action:"save",
+
+tim:
+document.getElementById("tim").value,
+
+petugas:
+document.getElementById("petugas").value,
+
+rak:
+document.getElementById("rak").value,
+
+kode:
+produk.kode,
+
+nama:
+produk.nama,
+
+barcode:
+produk.barcode,
+
+qty:
+document.getElementById("qty").value
+
+};
+
+
+
+document.getElementById(
+"scanInput"
+).value="";
+
+
+document.getElementById(
+"qty"
+).value="";
+
+
+document.getElementById(
+"produk"
+).innerHTML=
+
+"Belum ada produk";
+
+
+produk=null;
+
+
+document.getElementById(
+"scanInput"
+).focus();
+
+
+fetch(
+
+API,
+
+{
+
+method:"POST",
+
+body:
+JSON.stringify(body)
+
+}
+
+);
+
+}
+
+
+
+function tampilPopup(pesan){
+
+document
+.getElementById(
+"popupText"
+)
+.innerHTML=
+pesan;
+
+
+document
+.getElementById(
+"popup"
+)
+.style.display=
+"flex";
+
+}
+
+
+
+function tutupPopup(){
+
+document
+.getElementById(
+"popup"
+)
+.style.display=
+"none";
+
+}
+
+
+
+async function selesaiRak(){
+
+const rak=
+
+document
+.getElementById(
+"rak"
+)
+.value;
+
+
+if(!rak){
+
+tampilPopup(
+
+"⚠️ Rak kosong"
+
+);
+
+return;
+
+}
+
+
+const body={
+
+action:"selesaiRak",
+
+tim:
+document.getElementById(
+"tim"
+).value,
+
+petugas:
+document.getElementById(
+"petugas"
+).value,
+
+rak:rak
+
+};
+
+
+document
+.getElementById(
+"rak"
+)
+.value="";
+
+
+document
+.getElementById(
+"rak"
+)
+.focus();
+
+
+fetch(
+
+API,
+
+{
+
+method:"POST",
+
+body:
+JSON.stringify(body)
+
+}
+
+);
+
+}
+
+function resetProduk(){
+
+produk=null;
+
+document
+.getElementById(
+"produk"
+)
+.innerHTML=
+
+"Belum ada produk";
 
 }
