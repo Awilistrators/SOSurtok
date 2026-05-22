@@ -482,38 +482,28 @@ document
 async function simpan(){
 
 if(
-
 !document.getElementById("tim").value ||
-
 !document.getElementById("petugas").value ||
-
 !document.getElementById("rak").value
-
 ){
 
 tampilPopup(
-
 "⚠️ Harap pilih tim,<br><br>isi nama petugas dan rak"
-
 );
 
 return;
 
 }
-
 
 if(!produk){
 
 tampilPopup(
-
 "⚠️ Harap scan atau pilih produk"
-
 );
 
 return;
 
 }
-
 
 const body={
 
@@ -543,46 +533,61 @@ document.getElementById("qty").value
 };
 
 
+try{
+
+const res=
+
+await fetch(
+
+API,
+{
+method:"POST",
+body:JSON.stringify(body)
+}
+
+);
+
+const data=
+await res.json();
+
+
+if(!data.status){
+
+throw new Error();
+}
+
+
+/* reset hanya jika sukses */
 
 document.getElementById(
 "scanInput"
 ).value="";
-
 
 document.getElementById(
 "qty"
 ).value="";
 
-
 document.getElementById(
 "produk"
 ).innerHTML=
-
 "Belum ada produk";
 
-
 produk=null;
-
 
 document.getElementById(
 "scanInput"
 ).focus();
 
-
-await fetch(
-
-API,
-
-{
-
-method:"POST",
-
-body:
-JSON.stringify(body)
-
 }
+catch(err){
+
+tampilPopup(
+
+"❌ Gagal menyimpan.<br><br>Cek internet"
 
 );
+
+}
 
 }
 
