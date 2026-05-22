@@ -49,6 +49,8 @@ daftar=[
 "Riki",
 "Yanto",
 "Ridwan",
+"Janwar",
+"Ozi",
 "Wildan"
 
 ];
