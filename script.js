@@ -6,7 +6,7 @@ let scanner=null;
 
 const audioSukses=
 new Audio(
-"https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
+"https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
 );
 
 const audioError=
