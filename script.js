@@ -4,6 +4,17 @@ let MASTER=[];
 let produk=null;
 let scanner=null;
 
+const audioSukses=
+new Audio(
+"https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
+);
+
+const audioError=
+new Audio(
+"https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"
+);
+
+let MASTER_MAP={};
 
 
 window.onload=async()=>{
@@ -115,7 +126,15 @@ const data=
 await res.json();
 
 
-MASTER=(data.data||[]).map(item=>({
+MASTER=[];
+
+MASTER_MAP={};
+
+(data.data||[])
+
+.forEach(item=>{
+
+const obj={
 
 kode:
 String(item.kode||"")
@@ -130,7 +149,14 @@ String(item.barcode||"")
 .trim()
 .toUpperCase()
 
-}));
+};
+
+MASTER.push(obj);
+
+MASTER_MAP[obj.kode]=obj;
+MASTER_MAP[obj.barcode]=obj;
+
+});
 
 
 scanBtn.disabled=false;
@@ -370,17 +396,7 @@ produk=null;
 
 produk=
 
-MASTER.find(x=>{
-
-return(
-
-x.kode===input ||
-
-x.barcode===input
-
-);
-
-});
+MASTER_MAP[input];
 
 
 if(!produk){
@@ -426,7 +442,9 @@ return;
 
 }
 
+
 bunyiSukses();
+
 
 document
 .getElementById(
@@ -451,15 +469,11 @@ ${produk.barcode}
 `;
 
 
-setTimeout(()=>{
-
 document
 .getElementById(
 "qty"
 )
 .focus();
-
-},50);
 
 }
 
@@ -555,7 +569,7 @@ document.getElementById(
 ).focus();
 
 
-fetch(
+await fetch(
 
 API,
 
@@ -740,31 +754,18 @@ document
 
 function bunyiSukses(){
 
-const audio=
+audioSukses.currentTime=0;
 
-new Audio(
-
-"https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
-
-);
-
-audio.play();
+audioSukses.play();
 
 }
 
 
-
 function bunyiError(){
 
-const audio=
+audioError.currentTime=0;
 
-new Audio(
-
-"https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"
-
-);
-
-audio.play();
+audioError.play();
 
 }
 
