@@ -65,6 +65,10 @@ daftar=[
 "Agung",
 "Rilo",
 "Maul",
+"Asep",
+"Rahman",
+"Wildan",
+"Ozi",
 "Riki"
 
 ];
