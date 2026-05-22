@@ -483,10 +483,20 @@ document
 
 async function simpan(){
 
+const btn=
+document.querySelector(
+'button.btnBiru'
+);
+
+
 if(
+
 !document.getElementById("tim").value ||
+
 !document.getElementById("petugas").value ||
+
 !document.getElementById("rak").value
+
 ){
 
 tampilPopup(
@@ -497,6 +507,7 @@ return;
 
 }
 
+
 if(!produk){
 
 tampilPopup(
@@ -506,6 +517,16 @@ tampilPopup(
 return;
 
 }
+
+
+/* lock tombol */
+
+btn.disabled=true;
+
+btn.style.opacity="0.5";
+
+btn.innerHTML="Menyimpan...";
+
 
 const body={
 
@@ -542,12 +563,17 @@ const res=
 await fetch(
 
 API,
+
 {
+
 method:"POST",
+
 body:JSON.stringify(body)
+
 }
 
 );
+
 
 const data=
 await res.json();
@@ -556,10 +582,11 @@ await res.json();
 if(!data.status){
 
 throw new Error();
+
 }
 
 
-/* reset hanya jika sukses */
+/* reset form setelah benar-benar sukses */
 
 document.getElementById(
 "scanInput"
@@ -583,13 +610,23 @@ document.getElementById(
 }
 catch(err){
 
+console.log(err);
+
 tampilPopup(
 
-"❌ Gagal menyimpan.<br><br>Cek internet"
+"❌ Gagal menyimpan<br><br>Cek internet"
 
 );
 
 }
+
+/* aktifkan lagi tombol */
+
+btn.disabled=false;
+
+btn.style.opacity="1";
+
+btn.innerHTML="SIMPAN";
 
 }
 
